@@ -3,13 +3,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import logoCleannet from "@/assets/logo-cleannet.png";
+import { Link } from "react-router-dom";
 
 const navItems = [
-  { label: "Accueil", href: "#accueil" },
+  { label: "Accueil", href: "/" },
   { label: "Services", href: "#services" },
   { label: "Avant/Après", href: "#avant-apres" },
   { label: "Tarifs", href: "#tarifs" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
@@ -35,31 +36,41 @@ export function Header() {
     >
       <div className="container-tight flex items-center justify-between">
         {/* Logo */}
-        <a href="#accueil" className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img 
             src={logoCleannet} 
             alt="Clean&Net - Nettoyeurs Professionnels" 
             className="h-28 md:h-32 lg:h-36 w-auto"
           />
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors duration-200"
-            >
-              {item.label}
-            </a>
+            item.href.startsWith('#') ? (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-sm font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors duration-200"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="text-sm font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+            )
           ))}
         </nav>
 
         {/* CTA Button */}
         <div className="hidden md:block">
           <Button variant="hero" size="default" asChild>
-            <a href="#contact">Demander un devis</a>
+            <Link to="/contact">Demander un devis</Link>
           </Button>
         </div>
 
@@ -82,17 +93,28 @@ export function Header() {
         >
           <nav className="flex flex-col gap-4">
             {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-base font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors"
-              >
-                {item.label}
-              </a>
+              item.href.startsWith('#') ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors"
+                >
+                  {item.label}
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-base font-medium text-dark-foreground/80 hover:text-cleannet-green transition-colors"
+                >
+                  {item.label}
+                </Link>
+              )
             ))}
             <Button variant="hero" size="default" className="mt-4" asChild>
-              <a href="#contact">Demander un devis</a>
+              <Link to="/contact">Demander un devis</Link>
             </Button>
           </nav>
         </motion.div>

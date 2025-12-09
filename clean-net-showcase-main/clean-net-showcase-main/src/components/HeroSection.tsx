@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone } from "lucide-react";
 import heroImage from "@/assets/hero-cleaning.jpg";
+import { Link } from "react-router-dom";
 
 export function HeroSection() {
   const { scrollY } = useScroll();
@@ -76,10 +77,10 @@ export function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <Button variant="hero" size="lg" asChild>
-            <a href="#contact">
+            <Link to="/contact">
               Demander un devis gratuit
               <ArrowRight className="ml-2" size={18} />
-            </a>
+            </Link>
           </Button>
           <Button variant="heroOutline" size="lg" asChild>
             <a href="tel:+33600000000">

@@ -2,6 +2,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const pricingItems = [
   {
@@ -89,10 +90,10 @@ export function PricingSection() {
             Bureaux, maisons, fin de chantier : <span className="text-[hsl(0,0%,97%)]">devis sur mesure</span>
           </p>
           <Button variant="cta" size="lg" asChild>
-            <a href="#contact">
+            <Link to="/contact">
               Obtenir un devis immédiat
               <ArrowRight className="ml-2" size={18} />
-            </a>
+            </Link>
           </Button>
         </motion.div>
       </div>
