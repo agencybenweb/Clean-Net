@@ -6,23 +6,33 @@ import { Link } from "react-router-dom";
 
 const pricingItems = [
   {
-    service: "Canapé 2 places",
-    price: "à partir de 49€",
-    features: ["Nettoyage en profondeur", "Élimination des taches", "Désodorisation"],
+    service: "Canapé 2 ou 3 places",
+    price: "75 €",
+    features: ["Nettoyage en profondeur", "Élimination des taches", "Formule anti-acariens"],
   },
   {
-    service: "Canapé 3 places",
-    price: "à partir de 69€",
+    service: "Canapé 4 ou 5 places",
+    price: "85 €",
     features: ["Nettoyage complet", "Traitement anti-acariens", "Séchage rapide"],
   },
   {
+    service: "Fauteuil",
+    price: "60 €",
+    features: ["Nettoyage professionnel", "Formule anti-acariens", "Désodorisation"],
+  },
+  {
+    service: "Matelas 1 place",
+    price: "60 €",
+    features: ["Désinfection UV", "Formule anti-acariens", "Fraîcheur garantie"],
+  },
+  {
     service: "Matelas 2 places",
-    price: "à partir de 59€",
-    features: ["Désinfection UV", "Élimination allergènes", "Fraîcheur garantie"],
+    price: "À partir de 80 €",
+    features: ["Désinfection UV", "Formule anti-acariens", "Élimination allergènes"],
   },
   {
     service: "Moquette",
-    price: "à partir de 3€/m²",
+    price: "À partir de 6 €/m²",
     features: ["Shampooing professionnel", "Extraction puissante", "Ravivage couleurs"],
   },
 ];

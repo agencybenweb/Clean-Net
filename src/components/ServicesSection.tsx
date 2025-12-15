@@ -1,6 +1,21 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { Sofa, BedDouble, Layers, Building2, Home, HardHat } from "lucide-react";
+import { useRef, useState } from "react";
+import { Sofa, BedDouble, Layers, Building2, Home, HardHat, Sparkles } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ArrowRight, Euro } from "lucide-react";
+
+interface ServiceDetail {
+  description: string;
+  pricing: Array<{ label: string; price: string }>;
+}
 
 const services = [
   {
@@ -8,42 +23,98 @@ const services = [
     title: "Nettoyage de canapé",
     description: "Élimination des taches, odeurs et allergènes pour un canapé comme neuf",
     color: "cleannet-green",
+    details: {
+      description: "Nettoyage professionnel de canapé en tissu à domicile par injection / extraction. Élimination des taches, poussières, acariens et mauvaises odeurs, sans abîmer les fibres. Formule anti-acariens incluse.",
+      pricing: [
+        { label: "Fauteuil", price: "60 €" },
+        { label: "Canapé 2 ou 3 places", price: "75 €" },
+        { label: "Canapé 4 ou 5 places", price: "85 €" },
+        { label: "Canapé en U", price: "100 €" },
+        { label: "Nettoyage Togo", price: "Sur devis" },
+      ],
+    } as ServiceDetail,
   },
   {
     icon: BedDouble,
     title: "Nettoyage de matelas",
     description: "Désinfection en profondeur pour un sommeil sain et réparateur",
     color: "cleannet-blue",
+    details: {
+      description: "Nettoyage en profondeur du matelas pour éliminer acariens, bactéries, taches et odeurs. Formule anti-acariens incluse pour un couchage plus sain.",
+      pricing: [
+        { label: "Matelas 1 place", price: "60 €" },
+        { label: "Matelas 2 places (140)", price: "80 €" },
+        { label: "Matelas 2 places (160)", price: "90 €" },
+        { label: "Matelas 2 places (180)", price: "100 €" },
+      ],
+    } as ServiceDetail,
   },
   {
     icon: Layers,
     title: "Nettoyage de moquette",
     description: "Traitement professionnel pour raviver couleurs et textures",
     color: "cleannet-green",
-  },
-  {
-    icon: Building2,
-    title: "Entretien de bureaux",
-    description: "Solutions sur mesure pour un environnement de travail impeccable",
-    color: "cleannet-blue",
+    details: {
+      description: "Nettoyage de moquette par injection / extraction pour particuliers et professionnels. Élimine saletés incrustées, poussières et allergènes.",
+      pricing: [
+        { label: "Tarif", price: "À partir de 6 € / m²" },
+      ],
+    } as ServiceDetail,
   },
   {
     icon: Home,
-    title: "Maison & Appartement",
+    title: "Nettoyage appartement / maison",
     description: "Nettoyage complet de votre habitat du sol au plafond",
     color: "cleannet-green",
+    details: {
+      description: "Nettoyage complet avant ou après déménagement, remise en état avant état des lieux, nettoyage ponctuel ou approfondi selon vos besoins.",
+      pricing: [
+        { label: "Tarif", price: "Sur devis" },
+      ],
+    } as ServiceDetail,
   },
   {
     icon: HardHat,
-    title: "Fin de chantier",
+    title: "Nettoyage fin de chantier",
     description: "Remise en état après travaux pour un espace prêt à vivre",
     color: "cleannet-blue",
+    details: {
+      description: "Nettoyage après travaux ou rénovation pour éliminer poussières, gravats et résidus de chantier.",
+      pricing: [
+        { label: "Tarif", price: "Sur devis" },
+      ],
+    } as ServiceDetail,
+  },
+  {
+    icon: Building2,
+    title: "Entretien de bureaux & locaux",
+    description: "Solutions sur mesure pour un environnement de travail impeccable",
+    color: "cleannet-blue",
+    details: {
+      description: "Nettoyage régulier ou ponctuel de bureaux, commerces et locaux professionnels. Prestations adaptées aux besoins des entreprises.",
+      pricing: [
+        { label: "Tarif", price: "Sur devis" },
+      ],
+    } as ServiceDetail,
+  },
+  {
+    icon: Sparkles,
+    title: "Nettoyage terrasse & extérieurs",
+    description: "Nettoyage de terrasses, balcons et sols extérieurs",
+    color: "cleannet-green",
+    details: {
+      description: "Nettoyage de terrasses, balcons et sols extérieurs avec suppression des mousses, algues et traces de pollution.",
+      pricing: [
+        { label: "Tarif", price: "Sur devis" },
+      ],
+    } as ServiceDetail,
   },
 ];
 
 export function ServicesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
 
   return (
     <section id="services" className="section-padding bg-dark-surface relative overflow-hidden">
@@ -77,6 +148,7 @@ export function ServicesSection() {
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + index * 0.1, duration: 0.6 }}
+              onClick={() => setSelectedService(service)}
               className="group glass-dark rounded-3xl p-8 hover-lift cursor-pointer"
             >
               <div
@@ -104,6 +176,69 @@ export function ServicesSection() {
           ))}
         </div>
       </div>
+
+      {/* Modal pour afficher les détails */}
+      <Dialog open={!!selectedService} onOpenChange={(open) => !open && setSelectedService(null)}>
+        <DialogContent className="max-w-2xl bg-[hsl(0,0%,10%)] border-[hsl(0,0%,100%,0.1)] text-[hsl(0,0%,97%)]">
+          {selectedService && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-bold text-[hsl(0,0%,97%)] flex items-center gap-3">
+                  <div
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                      selectedService.color === "cleannet-green"
+                        ? "bg-cleannet-green/10"
+                        : "bg-cleannet-blue/10"
+                    }`}
+                  >
+                    <selectedService.icon
+                      className={`w-6 h-6 ${
+                        selectedService.color === "cleannet-green"
+                          ? "text-cleannet-green"
+                          : "text-cleannet-blue"
+                      }`}
+                    />
+                  </div>
+                  {selectedService.title}
+                </DialogTitle>
+                <DialogDescription className="text-[hsl(0,0%,97%,0.7)] text-base mt-4">
+                  {selectedService.details.description}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="mt-6">
+                <h4 className="text-lg font-semibold text-[hsl(0,0%,97%)] mb-4">Tarifs</h4>
+                <div className="space-y-3">
+                  {selectedService.details.pricing.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between p-4 rounded-xl bg-[hsl(0,0%,15%)] border border-[hsl(0,0%,100%,0.1)]"
+                    >
+                      <span className="text-[hsl(0,0%,97%,0.9)]">{item.label}</span>
+                      <span className="text-xl font-bold text-cleannet-green">{item.price}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-3">
+                <Button
+                  variant="cta"
+                  size="lg"
+                  className="flex-1"
+                  asChild
+                  onClick={() => setSelectedService(null)}
+                >
+                  <Link to="/contact">
+                    Demander un devis
+                    <ArrowRight className="ml-2" size={18} />
+                  </Link>
+                </Button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
