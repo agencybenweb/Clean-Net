@@ -1,23 +1,33 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, ArrowRight } from "lucide-react";
+import { Check, ArrowRight, BedDouble, Hand } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const pricingItems = [
   {
     service: "Canapé 2 ou 3 places",
-    price: "75 €",
+    price: "70 €",
+    originalPrice: "75 €",
     features: ["Nettoyage en profondeur", "Élimination des taches", "Formule anti-acariens"],
   },
   {
     service: "Canapé 4 ou 5 places",
-    price: "85 €",
+    price: "80 €",
+    originalPrice: "85 €",
     features: ["Nettoyage complet", "Traitement anti-acariens", "Séchage rapide"],
   },
   {
     service: "Fauteuil",
-    price: "60 €",
+    price: "50 €",
+    originalPrice: "60 €",
     features: ["Nettoyage professionnel", "Formule anti-acariens", "Désodorisation"],
   },
   {
@@ -37,9 +47,20 @@ const pricingItems = [
   },
 ];
 
+const matelasDetails = {
+  description: "Nettoyage en profondeur du matelas pour éliminer acariens, bactéries, taches et odeurs. Formule anti-acariens incluse pour un couchage plus sain.",
+  pricing: [
+    { label: "Matelas 1 place", price: "60 €" },
+    { label: "Matelas 2 places (140)", price: "80 €" },
+    { label: "Matelas 2 places (160)", price: "90 €" },
+    { label: "Matelas 2 places (180)", price: "100 €" },
+  ],
+};
+
 export function PricingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [showMatelasModal, setShowMatelasModal] = useState(false);
 
   return (
     <section id="tarifs" className="section-padding bg-[hsl(0,0%,5%)] relative overflow-hidden">
@@ -77,7 +98,29 @@ export function PricingSection() {
               className="backdrop-blur-xl border border-[hsl(0,0%,100%,0.1)] bg-[hsl(0,0%,10%,0.7)] rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300"
             >
               <h3 className="text-lg font-semibold text-[hsl(0,0%,97%)] mb-2">{item.service}</h3>
-              <p className="text-2xl font-bold text-[hsl(102,81%,60%)] mb-4">{item.price}</p>
+              <div className="mb-4">
+                {item.originalPrice && (
+                  <p className="text-lg text-red-500 line-through mb-1">
+                    {item.originalPrice}
+                  </p>
+                )}
+                {item.service === "Matelas 2 places" ? (
+                  <button
+                    onClick={() => setShowMatelasModal(true)}
+                    className="flex items-center gap-2 text-2xl font-bold text-[hsl(102,81%,60%)] hover:text-[hsl(102,81%,70%)] transition-colors cursor-pointer underline decoration-dotted group"
+                  >
+                    {item.price}
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <Hand className="w-4 h-4 text-[hsl(102,81%,60%)] group-hover:text-[hsl(102,81%,70%)] transition-colors" />
+                    </motion.div>
+                  </button>
+                ) : (
+                  <p className="text-2xl font-bold text-[hsl(102,81%,60%)]">{item.price}</p>
+                )}
+              </div>
               <ul className="space-y-2">
                 {item.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-2 text-sm text-[hsl(0,0%,97%,0.7)]">
@@ -107,6 +150,53 @@ export function PricingSection() {
           </Button>
         </motion.div>
       </div>
+
+      {/* Modal pour les détails des matelas */}
+      <Dialog open={showMatelasModal} onOpenChange={setShowMatelasModal}>
+        <DialogContent className="max-w-2xl bg-[hsl(0,0%,10%)] border-[hsl(0,0%,100%,0.1)] text-[hsl(0,0%,97%)]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-[hsl(0,0%,97%)] flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-cleannet-blue/10">
+                <BedDouble className="w-6 h-6 text-cleannet-blue" />
+              </div>
+              Nettoyage de matelas
+            </DialogTitle>
+            <DialogDescription className="text-[hsl(0,0%,97%,0.7)] text-base mt-4">
+              {matelasDetails.description}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-6">
+            <h4 className="text-lg font-semibold text-[hsl(0,0%,97%)] mb-4">Tarifs par taille</h4>
+            <div className="space-y-3">
+              {matelasDetails.pricing.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between p-4 rounded-xl bg-[hsl(0,0%,15%)] border border-[hsl(0,0%,100%,0.1)]"
+                >
+                  <span className="text-[hsl(0,0%,97%,0.9)]">{item.label}</span>
+                  <span className="text-xl font-bold text-cleannet-green">{item.price}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex gap-3">
+            <Button
+              variant="cta"
+              size="lg"
+              className="flex-1"
+              asChild
+              onClick={() => setShowMatelasModal(false)}
+            >
+              <Link to="/contact">
+                Demander un devis
+                <ArrowRight className="ml-2" size={18} />
+              </Link>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

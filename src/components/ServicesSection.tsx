@@ -10,11 +10,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Euro } from "lucide-react";
+import { ArrowRight, Euro, Hand } from "lucide-react";
 
 interface ServiceDetail {
   description: string;
-  pricing: Array<{ label: string; price: string }>;
+  pricing: Array<{ label: string; price: string; originalPrice?: string }>;
 }
 
 const services = [
@@ -26,10 +26,10 @@ const services = [
     details: {
       description: "Nettoyage professionnel de canapé en tissu à domicile par injection / extraction. Élimination des taches, poussières, acariens et mauvaises odeurs, sans abîmer les fibres. Formule anti-acariens incluse.",
       pricing: [
-        { label: "Fauteuil", price: "60 €" },
-        { label: "Canapé 2 ou 3 places", price: "75 €" },
-        { label: "Canapé 4 ou 5 places", price: "85 €" },
-        { label: "Canapé en U", price: "100 €" },
+        { label: "Fauteuil", price: "50 €", originalPrice: "60 €" },
+        { label: "Canapé 2 ou 3 places", price: "70 €", originalPrice: "75 €" },
+        { label: "Canapé 4 ou 5 places", price: "80 €", originalPrice: "85 €" },
+        { label: "Canapé en U", price: "90 €", originalPrice: "100 €" },
         { label: "Nettoyage Togo", price: "Sur devis" },
       ],
     } as ServiceDetail,
@@ -166,9 +166,17 @@ export function ServicesSection() {
                   }`}
                 />
               </div>
-              <h3 className="text-xl font-semibold text-dark-foreground mb-3 group-hover:text-cleannet-green transition-colors">
-                {service.title}
-              </h3>
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="text-xl font-semibold text-dark-foreground group-hover:text-cleannet-green transition-colors">
+                  {service.title}
+                </h3>
+                <motion.div
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <Hand className="w-4 h-4 text-dark-foreground/40 group-hover:text-cleannet-green transition-colors" />
+                </motion.div>
+              </div>
               <p className="text-dark-foreground/60 leading-relaxed">
                 {service.description}
               </p>
@@ -215,7 +223,14 @@ export function ServicesSection() {
                       className="flex items-center justify-between p-4 rounded-xl bg-[hsl(0,0%,15%)] border border-[hsl(0,0%,100%,0.1)]"
                     >
                       <span className="text-[hsl(0,0%,97%,0.9)]">{item.label}</span>
-                      <span className="text-xl font-bold text-cleannet-green">{item.price}</span>
+                      <div className="flex items-center gap-2">
+                        {item.originalPrice && (
+                          <span className="text-lg text-red-500 line-through">
+                            {item.originalPrice}
+                          </span>
+                        )}
+                        <span className="text-xl font-bold text-cleannet-green">{item.price}</span>
+                      </div>
                     </div>
                   ))}
                 </div>
