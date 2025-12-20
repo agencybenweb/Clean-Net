@@ -141,7 +141,7 @@ export function ServicesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex flex-wrap justify-center gap-6">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
@@ -149,7 +149,7 @@ export function ServicesSection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + index * 0.1, duration: 0.6 }}
               onClick={() => setSelectedService(service)}
-              className="group glass-dark rounded-3xl p-8 hover-lift cursor-pointer"
+              className="w-full md:w-[calc(50%-12px)] lg:w-[350px] group glass-dark rounded-3xl p-8 hover-lift cursor-pointer"
             >
               <div
                 className={`w-16 h-16 mb-6 rounded-2xl flex items-center justify-center transition-all duration-300 ${

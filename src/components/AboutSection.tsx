@@ -72,14 +72,14 @@ export function AboutSection() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="flex flex-wrap justify-center gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                className="text-center p-6 rounded-2xl bg-card/50 hover-lift"
+                className="w-full md:w-[calc(50%-12px)] lg:w-[250px] text-center p-6 rounded-2xl bg-card/50 hover-lift"
               >
                 <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cleannet-green/20 to-cleannet-blue/20 flex items-center justify-center">
                   <feature.icon className="w-7 h-7 text-cleannet-green" />

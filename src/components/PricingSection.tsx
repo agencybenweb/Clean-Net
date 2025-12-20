@@ -88,14 +88,14 @@ export function PricingSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
           {pricingItems.map((item, index) => (
             <motion.div
               key={item.service}
               initial={{ opacity: 0, y: 40 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2 + index * 0.1, duration: 0.6 }}
-              className="backdrop-blur-xl border border-[hsl(0,0%,100%,0.1)] bg-[hsl(0,0%,10%,0.7)] rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300"
+              className="w-full md:w-[calc(50%-12px)] lg:w-[280px] backdrop-blur-xl border border-[hsl(0,0%,100%,0.1)] bg-[hsl(0,0%,10%,0.7)] rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300"
             >
               <h3 className="text-lg font-semibold text-[hsl(0,0%,97%)] mb-2">{item.service}</h3>
               <div className="mb-4">
